@@ -1,0 +1,42 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To- note.</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container" style="max-width: 400px;">
+        <h2>Welcome back, {{ request.user }}</h2>
+        <br><br>
+
+            <form action="{% url 'new_task' %}" method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+            </form>
+        <br>
+
+        {% for task in tasks %}
+            <div>
+                <ul class="nav nav-tabs"  id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" href="{% url 'edit_task' task.id %}">Edit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'delete' task.id %}">Delete</a>
+                        <span>{{task}}</span>
+                    </li>
+                    <br>
+                </ul>
+            </div>
+        {% endfor %}
+
+    </div>
+{% bootstrap_javascript jquery='full' %}
+</body>
+</html>
