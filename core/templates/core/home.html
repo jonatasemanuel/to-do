@@ -15,7 +15,7 @@
         <h2>Welcome back, {{ request.user }}</h2>
         <br><br>
 
-            <form action="{% url 'new_task' %}" method="post" class="form">
+            <form action="{% url 'home' %}" method="post" class="form">
                 {% csrf_token %}
                 {% bootstrap_form form %}
             </form>

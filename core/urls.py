@@ -3,8 +3,9 @@ from . import views
 
 
 urlpatterns=[
-    path('', views.new_task, name='new_task'),
+    #path('', views.new_task, name='new_task'),
+    path('', views.FormHomeView.as_view(), name='home'),
     path('edit/<int:task_id>',views.edit_task, name='edit_task'),
-    path('delete/<int:task_id>', views.delete, name='delete')
+    path('delete/<int:task_id>', views.delete, name='delete'),
 ]
  
