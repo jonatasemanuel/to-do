@@ -1,3 +1,28 @@
-span {
-    text-align: left;
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0px auto;
 }
+
+h2 {
+    text-align: center;
+}
+
+a {
+    list-style: none;
+    color: rgb(123, 123, 127);  
+}
+
+a:hover {
+    color: rgb(135, 160, 241);
+}
+
+.navigation {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+  }
+
+li {
+    list-style: none;
+}
+

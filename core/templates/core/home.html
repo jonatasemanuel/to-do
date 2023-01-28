@@ -6,7 +6,7 @@
 
 {% block content %}
         <header class="card-header">
-            <h2 class="card-title">Welcome back, {{ request.user }}</h2>
+            <h2 class="card-title">[To-do note].</h2>
         </header>
         <br><br>
                 <form action="{% url 'home' %}" method="post" class="form">
@@ -16,18 +16,19 @@
                 <br>
 
                 {% for task in tasks %}
-                    <div>
-                        <ul class="nav nav-tabs"  id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link active" href="{% url 'edit' task.id %}">Edit</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'delete' task.id %}">Delete</a>
-                                <span>{{task}}</span>
-                            </li>
-                            <br>
-                        </ul>
-                    </div>
+                    
+                    <ul class="navigation">
+                        
+                        <li class="nav-group-item">
+                            <a class="nav-link" href="{% url 'edit' task.id %}"><strong>{{task}}</strong></a>
+                        </li>
+                        
+                        <li class="">
+                            <a class="btn btn-danger" href="{% url 'delete' task.id %}">Delete</a>
+                        </li>
+
+                    </ul>
+                   
                 {% endfor %}    
     
 {% endblock content %}
