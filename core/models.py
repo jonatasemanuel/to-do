@@ -9,4 +9,4 @@ class Task(models.Model):
     # owner = models.ForeingKey(User, on_delete=models.CASCADE) 
     # importar dj.contrib.auth.models import user
     def __str__(self) -> str:
-        return self.task[:37]
+        return self.task[:90]

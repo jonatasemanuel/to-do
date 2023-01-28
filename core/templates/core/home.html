@@ -5,28 +5,29 @@
 {% block title %} Home {% endblock title %}
 
 {% block content %}
-        <h2>Welcome back, {{ request.user }}</h2>
+        <header class="card-header">
+            <h2 class="card-title">Welcome back, {{ request.user }}</h2>
+        </header>
         <br><br>
+                <form action="{% url 'home' %}" method="post" class="form">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                </form>
+                <br>
 
-            <form action="{% url 'home' %}" method="post" class="form">
-                {% csrf_token %}
-                {% bootstrap_form form %}
-            </form>
-        <br>
-
-        {% for task in tasks %}
-            <div>
-                <ul class="nav nav-tabs"  id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" href="{% url 'edit' task.id %}">Edit</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'delete' task.id %}">Delete</a>
-                        <span>{{task}}</span>
-                    </li>
-                    <br>
-                </ul>
-            </div>
-        {% endfor %}
-
+                {% for task in tasks %}
+                    <div>
+                        <ul class="nav nav-tabs"  id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" href="{% url 'edit' task.id %}">Edit</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'delete' task.id %}">Delete</a>
+                                <span>{{task}}</span>
+                            </li>
+                            <br>
+                        </ul>
+                    </div>
+                {% endfor %}    
+    
 {% endblock content %}

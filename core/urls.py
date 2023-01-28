@@ -6,6 +6,6 @@ urlpatterns=[
     #path('', views.new_task, name='new_task'),
     path('', views.HomeFormView.as_view(), name='home'),
     path('edit/<int:pk>',views.TaskUpdateView.as_view(), name='edit'),
-    path('<int:pk>/delete', views.delete, name='delete'),
+    path('<int:pk>/delete', views.TaskDeleteView.as_view(), name='delete'),
 ]
  

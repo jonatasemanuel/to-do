@@ -1,6 +1,20 @@
+{% extends 'core/base.html' %}
 {% load bootstrap4 %}
 
-<form action="" method="post">
-    {% csrf_token %}
-    <input type="submit" name="confirm" class="btn btn">
-</form>
+{% block content %}
+    <header class="card-header">
+        <h2 class="card-title">Delete Task: [ {{ task.task }} ]</h2>
+    </header>
+
+    <div class="card-body">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="alert alert-warning" role="alert">
+                Do you whould like to delete the task <strong>{{ task }}?</strong>
+            </div>
+            <input type="submit" name="confirm" class="btn btn-danger" value="Delete">
+        </form>
+        <small><a href="{% url 'home' %}">cancel</a></small>
+    </div>
+
+{% endblock content %}

@@ -2,14 +2,14 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from .forms import TaskForm
 from .models import Task
-from django.views.generic import FormView, UpdateView
+from django.views.generic import FormView, UpdateView, DeleteView
 # from django.contrib.auth.decorators import login_required
 
 
 class HomeFormView(FormView):
     template_name = 'core/home.html'
     form_class = TaskForm
-    success_url = '.'
+    success_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
         context = super(FormView, self).get_context_data(**kwargs)
@@ -28,12 +28,17 @@ class TaskUpdateView(UpdateView):
     model = Task
     template_name = 'core/update.html'
     fields = ['task']
-
-    def get_success_url(self):
-        return reverse_lazy('home')
+    success_url = reverse_lazy('home')
 
 
-def delete(request, pk):
+class TaskDeleteView(DeleteView):
+    model = Task
+    template_name = 'core/delete.html'
+    success_url = reverse_lazy('home')
+    
+
+
+"""def delete(request, pk):
     task = Task.objects.get(id=pk)
     
     if request.method == 'POST':
@@ -41,7 +46,7 @@ def delete(request, pk):
         return redirect('home')
 
     context = {'task': task}
-    return render(request, 'core/delete.html', context)
+    return render(request, 'core/delete.html', context)"""
 
 
 """
