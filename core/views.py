@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from .forms import TaskForm
 from .models import Task
-from django.views.generic import FormView
+from django.views.generic import FormView, UpdateView
 # from django.contrib.auth.decorators import login_required
 
 """
@@ -19,7 +19,7 @@ def new_task(request):
     context = {'form': form, 'tasks': tasks}
     return render(request, 'core/home.html', context)"""
 
-class FormHomeView(FormView):
+class HomeFormView(FormView):
     template_name = 'core/home.html'
     form_class = TaskForm
     success_url = '.'
@@ -31,14 +31,14 @@ class FormHomeView(FormView):
     
     def form_valid(self, form,*args, **kwargs):
         form.save()
-        return super(FormHomeView, self).form_valid(form, *args, **kwargs)
+        return super(HomeFormView, self).form_valid(form, *args, **kwargs)
     
     def form_invalid(self, form, *args, **kwargs):
-        return super(FormHomeView, self).form_invalid(form, *args, **kwargs)
+        return super(HomeFormView, self).form_invalid(form, *args, **kwargs)
 
 
-def edit_task(request, task_id):
-    task = Task.objects.get(id = task_id)
+def edit(request, pk):
+    task = Task.objects.get(id=pk)
     form = TaskForm(instance=task)
 
     if request.method == 'POST':
@@ -48,11 +48,11 @@ def edit_task(request, task_id):
             return redirect('home')
 
     context = {'form': form}
-    return render(request, 'core/edit_task.html', context)
+    return render(request, 'core/update.html', context)
 
 
-def delete(request, task_id):
-    task = Task.objects.get(id = task_id)
+def delete(request, pk):
+    task = Task.objects.get(id=pk)
     
     if request.method == 'POST':
         task.delete()
