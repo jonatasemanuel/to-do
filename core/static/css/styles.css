@@ -1,19 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
 body {
     font-family: Arial, Helvetica, sans-serif;
-    margin: 0px auto;
 }
 
-h2 {
+h1 {
     text-align: center;
+}
+p {
+    margin: 0;
+}
+
+#task {
+    color: rgb(130, 130, 136);
 }
 
 a {
     list-style: none;
-    color: rgb(123, 123, 127);  
+    color: rgb(152, 152, 243);  
 }
 
 a:hover {
-    color: rgb(135, 160, 241);
+    color: rgb(87, 99, 136);
 }
 
 .navigation {
@@ -26,3 +38,11 @@ li {
     list-style: none;
 }
 
+.container {
+    position:absolute;
+    top:40%;
+    left:50%;
+    margin-left:-250px;/* half width*/
+    margin-top:-300px;/* half height*/
+    max-width: 500px;
+}

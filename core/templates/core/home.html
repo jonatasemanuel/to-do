@@ -5,8 +5,8 @@
 {% block title %} Home {% endblock title %}
 
 {% block content %}
-        <header class="card-header">
-            <h2 class="card-title">[To-do note].</h2>
+        <header class="jumbotron jumbotron-fluid">
+                <h1 class="display-4">[To-do note].</h1>
         </header>
         <br><br>
                 <form action="{% url 'home' %}" method="post" class="form">
@@ -16,19 +16,17 @@
                 <br>
 
                 {% for task in tasks %}
-                    
-                    <ul class="navigation">
-                        
-                        <li class="nav-group-item">
-                            <a class="nav-link" href="{% url 'edit' task.id %}"><strong>{{task}}</strong></a>
-                        </li>
-                        
-                        <li class="">
-                            <a class="btn btn-danger" href="{% url 'delete' task.id %}">Delete</a>
-                        </li>
+                 <div class="card">
+                    <div class="card-body">
 
-                    </ul>
-                   
+                        <p calss="task" class="card-text"><strong>{{task}}</strong></p>
+                        <br>
+                        <a class="card-link" href="{% url 'edit' task.id %}">Edit</a>
+                        <a class="card-link" href="{% url 'delete' task.id %}">Delete</a>
+
+                    </div>
+                </div> 
+                <br>
                 {% endfor %}    
     
 {% endblock content %}
