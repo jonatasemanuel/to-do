@@ -1,49 +1,31 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
-from django.views import View
 from .forms import TaskForm
 from .models import Task
 
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import login
 
-class HomeView(View):
-    def get(self, request, *args, **kwargs):
-        form = TaskForm
-        tasks = Task.objects.order_by('date_added').all()
-        context = {'tasks': tasks, 'form': form}
-        return render(request, 'core/home.html', context)
 
-    def post(self, request, *args, **kwargs):
-        form = TaskForm
-        tasks = Task.objects.order_by('date_added').all()
-        context = {'tasks': tasks, 'form': form}
-        return context
         
-
-
-"""class HomeFormView(LoginRequiredMixin, FormView):
+class HomeFormView(LoginRequiredMixin, FormView):
     template_name = 'core/home.html'
     form_class = TaskForm
     success_url = reverse_lazy('home')
     
+
     def get_context_data(self, **kwargs):
         context = super(HomeFormView, self).get_context_data(**kwargs)
-        
         context['tasks'] = Task.objects.order_by('date_added').all()
-        #context['tasks'] = context['tasks'].filter(user=self.request.user)
-        #context['count'] = context['tasks'].filter(complete=False).count()
+        #context['tasks'] = Task.Objects.filter(owner=self.request.user).order_by('date_added')
         return context
-    
+
     def form_valid(self, form,*args, **kwargs):
         form.instance.user = self.request.user
-        form.save()
+        form.save(form.instance.user)
         return super(HomeFormView, self).form_valid(form, *args, **kwargs)
     
     def form_invalid(self, form, *args, **kwargs):
-        return super(HomeFormView, self).form_invalid(form, *args, **kwargs)"""
+        return super(HomeFormView, self).form_invalid(form, *args, **kwargs)
 
 
 class TaskUpdateView(LoginRequiredMixin, UpdateView):
@@ -72,7 +54,7 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
 
 
 """
-def new_task(request):
+def home(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
