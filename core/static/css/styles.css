@@ -15,17 +15,16 @@ p {
     margin: 0;
 }
 
-#task {
-    color: rgb(130, 130, 136);
-}
+
 
 a {
-    list-style: none;
+    
     color: rgb(152, 152, 243);  
 }
 
 a:hover {
     color: rgb(87, 99, 136);
+    text-decoration : none;
 }
 
 .navigation {

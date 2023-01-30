@@ -1,3 +1,6 @@
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from django.views import View
 from .forms import TaskForm
 from .models import Task
 
@@ -6,8 +9,22 @@ from django.views.generic.edit import FormView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
 
+class HomeView(View):
+    def get(self, request, *args, **kwargs):
+        form = TaskForm
+        tasks = Task.objects.order_by('date_added').all()
+        context = {'tasks': tasks, 'form': form}
+        return render(request, 'core/home.html', context)
 
-class HomeFormView(LoginRequiredMixin, FormView):
+    def post(self, request, *args, **kwargs):
+        form = TaskForm
+        tasks = Task.objects.order_by('date_added').all()
+        context = {'tasks': tasks, 'form': form}
+        return context
+        
+
+
+"""class HomeFormView(LoginRequiredMixin, FormView):
     template_name = 'core/home.html'
     form_class = TaskForm
     success_url = reverse_lazy('home')
@@ -26,7 +43,7 @@ class HomeFormView(LoginRequiredMixin, FormView):
         return super(HomeFormView, self).form_valid(form, *args, **kwargs)
     
     def form_invalid(self, form, *args, **kwargs):
-        return super(HomeFormView, self).form_invalid(form, *args, **kwargs)
+        return super(HomeFormView, self).form_invalid(form, *args, **kwargs)"""
 
 
 class TaskUpdateView(LoginRequiredMixin, UpdateView):
