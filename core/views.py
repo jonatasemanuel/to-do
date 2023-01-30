@@ -1,21 +1,27 @@
-from django.urls import reverse_lazy
 from .forms import TaskForm
 from .models import Task
-from django.views.generic import FormView, UpdateView, DeleteView
-# from django.contrib.auth.decorators import login_required
+
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import login
 
 
-class HomeFormView(FormView):
+class HomeFormView(LoginRequiredMixin, FormView):
     template_name = 'core/home.html'
     form_class = TaskForm
     success_url = reverse_lazy('home')
-
+    
     def get_context_data(self, **kwargs):
-        context = super(FormView, self).get_context_data(**kwargs)
+        context = super(HomeFormView, self).get_context_data(**kwargs)
+        
         context['tasks'] = Task.objects.order_by('date_added').all()
+        #context['tasks'] = context['tasks'].filter(user=self.request.user)
+        #context['count'] = context['tasks'].filter(complete=False).count()
         return context
     
     def form_valid(self, form,*args, **kwargs):
+        form.instance.user = self.request.user
         form.save()
         return super(HomeFormView, self).form_valid(form, *args, **kwargs)
     
@@ -23,18 +29,18 @@ class HomeFormView(FormView):
         return super(HomeFormView, self).form_invalid(form, *args, **kwargs)
 
 
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(LoginRequiredMixin, UpdateView):
     model = Task
     template_name = 'core/update.html'
     fields = ['task']
     success_url = reverse_lazy('home')
 
 
-class TaskDeleteView(DeleteView):
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     template_name = 'core/delete.html'
     success_url = reverse_lazy('home')
-    
+
 
 
 """def delete(request, pk):
