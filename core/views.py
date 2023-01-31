@@ -1,12 +1,116 @@
+from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect, render
 from .forms import TaskForm
 from .models import Task
 
 from django.urls import reverse_lazy
-from django.views.generic.edit import FormView, UpdateView, DeleteView
+from django.views import View
+from django.views.generic import ListView
+from django.views.generic.edit import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
+class HomeView(LoginRequiredMixin, View):
+    template_name = 'core/home.html'
+    
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+
+        tasks = Task.objects.filter(owner=self.request.user).order_by('date_added')
+        self.context = {
+            'tasks': tasks,
+            'form': TaskForm(request.POST or None),
+        }
         
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+    
+    def post(self, request, *args, **kwargs):
+        form = self.context['form']
+        
+        if not form.is_valid():
+            return render(request, self.template_name, self.context)
+
+        task = form.save(commit=False)
+        
+        if request.user.is_authenticated:
+            task.owner = request.user
+        
+        form.instance.user = self.request.user
+        form.save(form.instance.user)
+        return redirect('home')
+            
+
+class TaskUpdateView(LoginRequiredMixin, View):
+    template_name = 'core/update.html'
+    
+    def get(self, request, pk):
+        task = Task.objects.get(id=pk)
+        form = TaskForm(request.POST, instance=task)
+        context = {
+            'form':form
+            }
+        return render(request, self.template_name, context)
+    
+    def post(self, request, pk):
+        task = Task.objects.get(id=pk)
+        task.task=request.POST.get('task')
+        if task.owner != request.user:
+            raise Http404
+        task.save()
+        return redirect('home')
+
+
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
+    model = Task
+    template_name = 'core/delete.html'
+    success_url = reverse_lazy('home')
+
+class Error404(ListView):
+    template_name = 'core/404.html'
+
+"""
+# Functions Based Views
+def home(request):
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            #new_task.owner = request.user
+            form.save()
+            form = TaskForm()
+
+    form = TaskForm()
+    tasks = Task.objects.order_by('date_added').all()
+    context = {'form': form, 'tasks': tasks}
+    return render(request, 'core/home.html', context)
+
+    
+def edit(request, pk):
+    task = Task.objects.get(id=pk)
+    form = TaskForm(instance=task)
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+    context = {'form': form}
+    return render(request, 'core/update.html', context)
+
+def delete(request, pk):
+    task = Task.objects.get(id=pk)
+    
+    if request.method == 'POST':
+        task.delete()
+        return redirect('home')
+
+    context = {'task': task}
+    return render(request, 'core/delete.html', context)
+
+
+# Generic Based Views
 class HomeFormView(LoginRequiredMixin, FormView):
     template_name = 'core/home.html'
     form_class = TaskForm
@@ -27,58 +131,10 @@ class HomeFormView(LoginRequiredMixin, FormView):
     def form_invalid(self, form, *args, **kwargs):
         return super(HomeFormView, self).form_invalid(form, *args, **kwargs)
 
-
 class TaskUpdateView(LoginRequiredMixin, UpdateView):
     model = Task
     template_name = 'core/update.html'
     fields = ['task']
     success_url = reverse_lazy('home')
-
-
-class TaskDeleteView(LoginRequiredMixin, DeleteView):
-    model = Task
-    template_name = 'core/delete.html'
-    success_url = reverse_lazy('home')
-
-
-
-"""def delete(request, pk):
-    task = Task.objects.get(id=pk)
     
-    if request.method == 'POST':
-        task.delete()
-        return redirect('home')
-
-    context = {'task': task}
-    return render(request, 'core/delete.html', context)"""
-
-
-"""
-def home(request):
-    if request.method == 'POST':
-        form = TaskForm(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            #new_task.owner = request.user
-            form.save()
-            form = TaskForm()
-
-    form = TaskForm()
-    tasks = Task.objects.order_by('date_added').all()
-    context = {'form': form, 'tasks': tasks}
-    return render(request, 'core/home.html', context)
-    
-def edit(request, pk):
-    task = Task.objects.get(id=pk)
-    form = TaskForm(instance=task)
-
-    if request.method == 'POST':
-        form = TaskForm(request.POST, instance=task)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-
-    context = {'form': form}
-    return render(request, 'core/update.html', context)
-
 """
