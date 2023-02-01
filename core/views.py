@@ -46,18 +46,22 @@ class TaskUpdateView(LoginRequiredMixin, View):
     
     def get(self, request, pk):
         task = Task.objects.get(id=pk)
-        form = TaskForm(request.POST, instance=task)
+        
+        if task.owner != request.user:
+            raise Http404
+        
+        form = TaskForm(instance=task)
         context = {
-            'form':form
+            'form':form,
             }
+        
         return render(request, self.template_name, context)
     
     def post(self, request, pk):
         task = Task.objects.get(id=pk)
         task.task=request.POST.get('task')
-        if task.owner != request.user:
-            raise Http404
         task.save()
+        
         return redirect('home')
 
 
@@ -66,8 +70,6 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'core/delete.html'
     success_url = reverse_lazy('home')
 
-class Error404(ListView):
-    template_name = 'core/404.html'
 
 """
 # Functions Based Views
