@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-size: 1.05rem;
   }
 
 body {
@@ -12,20 +13,19 @@ h1 {
     text-align: center;
 }
 
-
 #task-name {
     margin-left: 7px;
     color: rgb(37, 37, 37);
 }
+
 #task-name:hover {
     color: rgb(120, 139, 196);
 }
 
 a:hover {
-    color: rgb(120, 139, 196);
+    color: rgb(106, 175, 243);
     text-decoration : none;
 }
-
 
 li {
     list-style: none;
@@ -35,6 +35,14 @@ li {
     max-width: 500px;
 }
 
-input {
-    border-radius: 15px;
+#task-body {
+    display: flex;
+    flex-direction: row wrap;
+    justify-items: space-between;
+    margin-top: -20px;
+    margin-bottom: 35px;
+}
+
+header {
+    margin-top: 30px;
 }

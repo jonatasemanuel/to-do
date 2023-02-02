@@ -8,7 +8,7 @@
         <header class="jumbotron jumbotron-fluid">
                 <h1 class="display-4">[To-do note].</h1>
         </header>
-        <br><br>
+
                 <form action="{% url 'home' %}" method="post" class="form">
                     {% csrf_token %}
                     {% bootstrap_form form %}
@@ -16,28 +16,27 @@
                 <br>
 
                 {% for task in tasks %}
-                 <div class="card">
+                <div id="task-body" class="card">
                     <div class="card-body">
-
                         {% if not task.complete %}
                             
-                            <input type="checkbox" id="complete" name="complete" onclik="TaskDone();">
-                            <a id="task-name" class="card-link" href="{% url 'edit' task.id %}">{{task}}</a>
+                            <span id="to-do" >&#128221;</span>
+                            <a id="task-name" class="card-link" href="{% url 'edit' task.id %}">{{ task|title }}</a>
                             
-                            <a class="card-link" href="{% url 'delete' task.id %}">&#215;</a>
+                            <a id="delete" class="card-link" href="{% url 'delete' task.id %}">&#10006;</a>
 
                         {% else %}
 
-                            <input type="checkbox" id="complete" name="complete" onclik="TaskDone();">
-                            <a style="text-decoration:line-through" id="task-name" class="card-link" href="{% url 'edit' task.id %}">{{task}}</a>
+                            <span id="done" >&#129504;</span>
+                            <a style="text-decoration:line-through" id="task-name" class="card-link" href="{% url 'edit' task.id %}">{{ task|title }}</a>
                             
-                            <a class="card-link" href="{% url 'delete' task.id %}">&#215;</a>
+                            <a id="delete" class="card-link" href="{% url 'delete' task.id %}">&#10006;</a>
                         
                         {% endif %}
 
                     </div>
                 </div> 
-                <br>
+                
                 {% endfor %}    
     
 {% endblock content %}
