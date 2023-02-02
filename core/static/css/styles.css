@@ -36,11 +36,7 @@ li {
 }
 
 #task-body {
-    display: flex;
-    flex-direction: row wrap;
-    justify-items: space-between;
-    margin-top: -20px;
-    margin-bottom: 35px;
+    margin-bottom: 15px;
 }
 
 header {

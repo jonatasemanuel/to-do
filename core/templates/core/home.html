@@ -14,24 +14,36 @@
                     {% bootstrap_form form %}
                 </form>
                 <br>
-
+                
                 {% for task in tasks %}
                 <div id="task-body" class="card">
                     <div class="card-body">
                         {% if not task.complete %}
-                            
-                            <span id="to-do" >&#128221;</span>
-                            <a id="task-name" class="card-link" href="{% url 'edit' task.id %}">{{ task|title }}</a>
-                            
-                            <a id="delete" class="card-link" href="{% url 'delete' task.id %}">&#10006;</a>
+
+                            <table class="container text-left">
+        
+                                    <tr>
+                                        <td class="col-1"><span id="to-do" >&#128221;</span></td>
+                                        <td class="col-6"><a id="task-name" class="card-link" href="{% url 'edit' task.id %}">{{ task|title }}</a></td>
+                                        
+                                        <td class="col-1"><a id="delete" class="card-link" href="{% url 'delete' task.id %}">&#10006;</a></td>
+                                    </tr>
+                                    
+                            </table>
 
                         {% else %}
 
-                            <span id="done" >&#129504;</span>
-                            <a style="text-decoration:line-through" id="task-name" class="card-link" href="{% url 'edit' task.id %}">{{ task|title }}</a>
-                            
-                            <a id="delete" class="card-link" href="{% url 'delete' task.id %}">&#10006;</a>
-                        
+                            <table class="container text-left">
+
+                                <tr>
+                                    <td class="col-1"><span id="done" >&#129504;</span></td>
+                                    <td class="col-6"><a style="text-decoration:line-through" id="task-name" class="card-link" href="{% url 'edit' task.id %}">{{ task|title }}</a></td>
+                                    
+                                    <td class="col-1"><a id="delete" class="card-link" href="{% url 'delete' task.id %}">&#10006;</a></td>
+                                <tr>
+
+                            </table>
+
                         {% endif %}
 
                     </div>
