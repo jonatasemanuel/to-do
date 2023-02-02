@@ -1,12 +1,11 @@
 from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from .forms import TaskForm
 from .models import Task
 
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView
-from django.views.generic.edit import DeleteView
+from django.views.generic.edit import DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -37,12 +36,14 @@ class HomeView(LoginRequiredMixin, View):
             task.owner = request.user
         
         form.instance.user = self.request.user
-        form.save(form.instance.user)
+        form.save()
         return redirect('home')
             
-
-class TaskUpdateView(LoginRequiredMixin, View):
+class TaskUpdateView(LoginRequiredMixin, UpdateView):
+    model = Task
     template_name = 'core/update.html'
+    fields = ['task', 'complete']
+    success_url = reverse_lazy('home')
     
     def get(self, request, pk):
         task = Task.objects.get(id=pk)
@@ -54,15 +55,8 @@ class TaskUpdateView(LoginRequiredMixin, View):
         context = {
             'form':form,
             }
-        
+
         return render(request, self.template_name, context)
-    
-    def post(self, request, pk):
-        task = Task.objects.get(id=pk)
-        task.task=request.POST.get('task')
-        task.save()
-        
-        return redirect('home')
 
 
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
@@ -87,7 +81,6 @@ def home(request):
     context = {'form': form, 'tasks': tasks}
     return render(request, 'core/home.html', context)
 
-    
 def edit(request, pk):
     task = Task.objects.get(id=pk)
     form = TaskForm(instance=task)
@@ -111,14 +104,12 @@ def delete(request, pk):
     context = {'task': task}
     return render(request, 'core/delete.html', context)
 
-
 # Generic Based Views
 class HomeFormView(LoginRequiredMixin, FormView):
     template_name = 'core/home.html'
     form_class = TaskForm
     success_url = reverse_lazy('home')
     
-
     def get_context_data(self, **kwargs):
         context = super(HomeFormView, self).get_context_data(**kwargs)
         context['tasks'] = Task.objects.order_by('date_added').all()
@@ -139,4 +130,26 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     fields = ['task']
     success_url = reverse_lazy('home')
     
+class TaskUpdateView(LoginRequiredMixin, View):
+    template_name = 'core/update.html'
+    
+    def get(self, request, pk):
+        task = Task.objects.get(id=pk)
+        
+        if task.owner != request.user:
+            raise Http404
+        
+        form = TaskForm(instance=task)
+        context = {
+            'form':form,
+            }
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, pk):
+        task = Task.objects.get(id=pk)
+        task.task=request.POST.get('task')
+        task.save()
+        
+        return redirect('home')
 """

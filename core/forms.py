@@ -3,7 +3,12 @@ from .models import Task
 
 
 class TaskForm(forms.ModelForm):
+    task = forms.CharField(
+            widget=forms.TextInput(
+                attrs={
+                    'placeholder':'Add new task:'
+                    }))
+    
     class Meta:
         model = Task
-        fields = ['task',]
-        labels = {'task': 'To- do:'}
+        fields = ['task', 'complete']

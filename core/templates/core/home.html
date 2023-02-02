@@ -19,10 +19,21 @@
                  <div class="card">
                     <div class="card-body">
 
-                        <p class="card-text"><i>{{task}}</i></p>
-                        <br>
-                        <a class="card-link" href="{% url 'edit' task.id %}">Edit</a>
-                        <a class="card-link" href="{% url 'delete' task.id %}">Delete</a>
+                        {% if not task.complete %}
+                            
+                            <input type="checkbox" id="complete" name="complete" onclik="TaskDone();">
+                            <a id="task-name" class="card-link" href="{% url 'edit' task.id %}">{{task}}</a>
+                            
+                            <a class="card-link" href="{% url 'delete' task.id %}">&#215;</a>
+
+                        {% else %}
+
+                            <input type="checkbox" id="complete" name="complete" onclik="TaskDone();">
+                            <a style="text-decoration:line-through" id="task-name" class="card-link" href="{% url 'edit' task.id %}">{{task}}</a>
+                            
+                            <a class="card-link" href="{% url 'delete' task.id %}">&#215;</a>
+                        
+                        {% endif %}
 
                     </div>
                 </div> 
