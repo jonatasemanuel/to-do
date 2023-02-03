@@ -19,11 +19,15 @@ h1 {
 }
 
 #task-name:hover {
-    color: rgb(120, 139, 196);
+    color: rgb(86, 111, 184);
+}
+
+a {
+    color: rgb(151, 188, 252);
 }
 
 a:hover {
-    color: rgb(106, 175, 243);
+    color: rgb(22, 81, 140);
     text-decoration : none;
 }
 
@@ -39,6 +43,46 @@ li {
     margin-bottom: 15px;
 }
 
-header {
-    margin-top: 30px;
+.jumbotron {
+   border-radius: 40px 40px 0 0;
+   background-color: rgba(150, 166, 169, 0.895);
+   color: rgb(255, 245, 231);
+}
+
+.logout {
+    color: rgb(249, 212, 160);
+}
+
+.logout:hover {
+    color: rgb(247, 231, 207);
+}
+
+#delete {
+    color: rgb(255, 187, 138);
+}
+
+#delete:hover {
+    color: rgb(247, 231, 207);
+}
+
+.user {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    margin-bottom: -10px;
+    margin-left: 40px;
+}
+
+.btn{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-items: flex-start;
+}
+
+#done {
+    font-size: 0.9rem;
+}
+
+#to-do {
+    font-size: 1.30rem;
 }

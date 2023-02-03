@@ -6,7 +6,7 @@
 
     <div class="card">
         <h5 class="card-header">Login</h5>
-        <div class="card-body">
+    <div id="login" class="card-body">
     
             <form action="{% url 'login' %}" method="POST">{% csrf_token %}
                 {% bootstrap_form form %}
@@ -15,6 +15,9 @@
                 {% endbuttons %}
                 <input type="hidden" name="next" value="{% url 'home' %}">
             </form>
+
+                <a class ="register" href="{% url 'register' %}">register</a>
+
         </div>
 </div>
 

@@ -1,0 +1,18 @@
+{% load static %}
+
+<nav>
+    <ul>
+
+        {% if request.user.is_authenticated %}
+            <li class="nav-item">
+                
+            </li>
+
+        {% else %}
+            <li class="nav-item">
+            
+            </li>
+        {% endif %}
+
+    </ul>     
+</nav>
