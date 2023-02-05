@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -121,7 +121,11 @@ LOGIN_URL = 'login'
 BASE_DIR / 'templates'
 BASE_DIR / 'static'
 
-STATIC_URL = '/static/'
+#STATICFILES_DIRS = [
+#    BASE_DIR / 'templates/static'
+#]
+
+STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = 'media/'
